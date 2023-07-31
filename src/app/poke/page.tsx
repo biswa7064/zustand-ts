@@ -1,9 +1,10 @@
 "use client"
-import usePokeStore from "@/store/pokeStore"
+import { usePokeActions, usePokesState } from "@/store/pokeStore"
 import React, { useEffect } from "react"
 
 const Poke = () => {
-  const { pokes, isLoadingPokes, errMsg, fetchPokemonData } = usePokeStore()
+  const { pokes, isLoadingPokes, errMsg } = usePokesState()
+  const { fetchPokemonData } = usePokeActions()
   useEffect(() => {
     let isMount = true
     if (isMount) {

@@ -1,5 +1,7 @@
 import { getPokesData } from "@/apis/pokeApi"
+import { StoreType } from "@/types"
 import { create } from "zustand"
+import { shallow } from "zustand/shallow"
 
 export interface PokeType {
   name: string
@@ -9,17 +11,34 @@ export interface PokeType {
 export interface PokeStateType {
   isLoadingPokes: boolean
   pokes: PokeType[]
-  errMsg: string | undefined
+  errMsg?: string
+}
+
+export interface PokeActionsType {
   fetchPokemonData: () => Promise<void>
 }
 
-const usePokeStore = create<PokeStateType>((set) => ({
-  isLoadingPokes: true,
-  pokes: [],
-  errMsg: undefined,
-  fetchPokemonData: async () => {
-    await getPokesData(set)
-  },
-}))
+const usePokeStore = create<StoreType<PokeStateType, PokeActionsType>>(
+  (set) => ({
+    isLoadingPokes: true,
+    pokes: [],
+    errMsg: undefined,
+    actions: {
+      fetchPokemonData: async () => {
+        await getPokesData(set)
+      },
+    },
+  })
+)
 
-export default usePokeStore
+// selectors
+export const usePokesState = () =>
+  usePokeStore(
+    (state) => ({
+      pokes: state.pokes,
+      isLoadingPokes: state.isLoadingPokes,
+      errMsg: state.errMsg,
+    }),
+    shallow
+  )
+export const usePokeActions = () => usePokeStore((state) => state.actions)
