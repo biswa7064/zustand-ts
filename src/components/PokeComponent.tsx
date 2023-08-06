@@ -14,7 +14,7 @@ const PokeComponent: FC<PokePropsType> = ({
   errMsg,
 }) => {
   const { isChecked } = useToggleState()
-
+  console.log({ isChecked })
   return (
     <div>
       {isLoadingPokes ? (
