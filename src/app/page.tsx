@@ -17,7 +17,7 @@ export default function Home() {
     return () => {
       isMount = false
     }
-  }, [])
+  }, [getItems])
 
   return (
     <div className="flex flex-col gap-2 p-5">

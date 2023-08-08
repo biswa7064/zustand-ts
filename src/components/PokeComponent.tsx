@@ -22,9 +22,7 @@ const PokeComponent: FC<PokePropsType> = ({
       ) : errMsg ? (
         <p>{errMsg}</p>
       ) : (
-        <p className={"text-blue-300 dark:text-white"}>
-          {JSON.stringify(pokes)}
-        </p>
+        <p className={"text-blue-500"}>{JSON.stringify(pokes)}</p>
       )}
     </div>
   )

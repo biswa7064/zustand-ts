@@ -15,7 +15,7 @@ const Poke = () => {
     return () => {
       isMount = false
     }
-  }, [])
+  }, [fetchPokemonData])
   console.log({ pokes, isLoadingPokes, errMsg })
   return (
     <div className="p-[1em] flex flex-col space-y-6 h-full">
