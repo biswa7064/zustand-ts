@@ -1,5 +1,5 @@
 import { getPokesData } from "@/apis/pokeApi"
-import { StoreType } from "@/types"
+import { ExtractStateType, GetStateType, StoreType } from "@/types"
 import { create } from "zustand"
 import { shallow } from "zustand/shallow"
 
@@ -18,7 +18,7 @@ export interface PokeActionsType {
   fetchPokemonData: () => Promise<void>
 }
 
-const usePokeStore = create<StoreType<PokeStateType, PokeActionsType>>(
+export const usePokeStore = create<StoreType<PokeStateType, PokeActionsType>>(
   (set) => ({
     isLoadingPokes: true,
     pokes: [],
@@ -32,6 +32,7 @@ const usePokeStore = create<StoreType<PokeStateType, PokeActionsType>>(
 )
 
 // selectors
+// normal logic
 export const usePokesState = () =>
   usePokeStore(
     (state) => ({
@@ -42,3 +43,7 @@ export const usePokesState = () =>
     shallow
   )
 export const usePokeActions = () => usePokeStore((state) => state.actions)
+
+// like redux/advance logic
+export const pokesSelector = (state: ExtractStateType<typeof usePokeStore>) =>
+  state.pokes

@@ -1,5 +1,5 @@
 import { PokeStateType } from "@/store/pokeStore"
-import { SetStateType, StoreType } from "@/types"
+import { SetStateType } from "@/types"
 
 const API_BASE_URL = "https://pokeapi.co/api/v2"
 export const getPokesData = async (set: SetStateType<PokeStateType>) => {
