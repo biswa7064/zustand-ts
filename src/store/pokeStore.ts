@@ -1,5 +1,5 @@
 import { getPokesData } from "@/apis/pokeApi"
-import { ExtractStateType, GetStateType, StoreType } from "@/types"
+import { ExtractStateType, StoreType } from "@/types"
 import { create } from "zustand"
 import { shallow } from "zustand/shallow"
 
