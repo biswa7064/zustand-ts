@@ -8,5 +8,6 @@ const createJestConfig = nextJest({
 // Add any custom Jest configuration options here
 module.exports = createJestConfig({
   preset: "ts-jest",
+  testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 })
