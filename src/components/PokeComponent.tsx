@@ -1,6 +1,6 @@
 import { PokeStateType } from "@/store/pokeStore"
 import { useToggleState } from "@/store/toggleStore"
-import React, { FC, useEffect } from "react"
+import { FC } from "react"
 
 interface PokePropsType {
   pokes: PokeStateType["pokes"]

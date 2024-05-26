@@ -2,6 +2,7 @@ import { getPokesData } from "@/apis/pokeApi"
 import { ExtractStateType, StoreType } from "@/types"
 import { create } from "zustand"
 import { shallow } from "zustand/shallow"
+import { logger } from "./middleware/logMiddleware"
 
 export interface PokeType {
   name: string
@@ -19,7 +20,7 @@ export interface PokeActionsType {
 }
 
 export const usePokeStore = create<StoreType<PokeStateType, PokeActionsType>>(
-  (set) => ({
+  logger((set) => ({
     isLoadingPokes: true,
     pokes: [],
     errMsg: undefined,
@@ -28,7 +29,7 @@ export const usePokeStore = create<StoreType<PokeStateType, PokeActionsType>>(
         await getPokesData(set)
       },
     },
-  })
+  }))
 )
 
 // selectors

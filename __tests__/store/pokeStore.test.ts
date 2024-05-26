@@ -1,5 +1,6 @@
-import { usePokeStore } from "@/store/pokeStore"
-import { MockProxy, mock } from "jest-mock-extended"
+import { pokesSelector, usePokesState, usePokeStore } from "@/store/pokeStore"
+import { renderHook } from "@testing-library/react"
+import { mock, MockProxy } from "jest-mock-extended"
 import { act } from "react-dom/test-utils"
 import { getPokesData } from "../../src/apis/pokeApi"
 const mockCreatePokeStore: MockProxy<typeof usePokeStore> =
@@ -9,7 +10,7 @@ describe(usePokeStore, () => {
     jest.clearAllMocks()
     mockCreatePokeStore.getState.mockReturnValue({
       pokes: [],
-      isLoadingPokes: false,
+      isLoadingPokes: true,
       errMsg: undefined,
       actions: {
         fetchPokemonData: jest.fn(),
@@ -23,7 +24,8 @@ describe(usePokeStore, () => {
     const state = mockCreatePokeStore.getState()
     expect(state.pokes).toEqual([])
     expect(state.errMsg).toBeUndefined()
-    expect(state.isLoadingPokes).toBeFalsy()
+    expect(state.isLoadingPokes).toBeTruthy()
+    expect(state.actions.fetchPokemonData).not.toHaveBeenCalled()
   })
   it("should return pokes data if any", async () => {
     const pokesData = {
@@ -49,5 +51,56 @@ describe(usePokeStore, () => {
     })
     expect(state.actions.fetchPokemonData).toHaveBeenCalled()
     expect(state.pokes).toHaveLength(1)
+    expect(state.pokes).toEqual(pokesData.results)
+  })
+})
+
+describe("usePokesState", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+    jest.restoreAllMocks()
+  })
+
+  it("should return initial state", () => {
+    const { result } = renderHook(() => usePokesState())
+    expect(result.current.isLoadingPokes).toBe(true)
+    expect(result.current.pokes).toEqual([])
+    expect(result.current.errMsg).toBeUndefined()
+  })
+
+  it("should return state based on changes", async () => {
+    const pokesData = [{ name: "", url: "" }]
+    const { result } = renderHook(() => usePokesState())
+    result.current = {
+      ...result.current,
+      pokes: pokesData,
+      isLoadingPokes: false,
+      errMsg: undefined,
+    }
+    expect(result.current.isLoadingPokes).toBe(false)
+    expect(result.current.pokes).toEqual(pokesData)
+    expect(result.current.errMsg).toBeUndefined()
+  })
+})
+
+describe(pokesSelector, () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    mockCreatePokeStore.getState.mockReturnValue({
+      pokes: [{ name: "", url: "" }],
+      isLoadingPokes: false,
+      errMsg: undefined,
+      actions: {
+        fetchPokemonData: jest.fn(),
+      },
+    })
+  })
+  it("should select the individual state", () => {
+    const pokes = pokesSelector(mockCreatePokeStore.getState())
+    expect(pokes).toHaveLength(1)
   })
 })
