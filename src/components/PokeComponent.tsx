@@ -14,7 +14,7 @@ const PokeComponent: FC<PokePropsType> = ({
   errMsg,
 }) => {
   const { isChecked } = useToggleState()
-  console.log({ isChecked })
+
   return (
     <div>
       {isLoadingPokes ? (
@@ -22,7 +22,9 @@ const PokeComponent: FC<PokePropsType> = ({
       ) : errMsg ? (
         <p>{errMsg}</p>
       ) : (
-        <p className={"text-blue-500"}>{JSON.stringify(pokes)}</p>
+        <p className={!isChecked ? "text-black" : "text-blue-500"}>
+          {JSON.stringify(pokes)}
+        </p>
       )}
     </div>
   )
