@@ -1,6 +1,7 @@
 import { StoreType } from "@/types"
 import { Draft, produce } from "immer"
 import { create } from "zustand"
+import { logger } from "./middleware/logMiddleware"
 
 const arr = [
   {
@@ -27,28 +28,30 @@ interface ImmerActionType {
 
 export type ImmerStoreType = StoreType<ImmerStateType, ImmerActionType>
 
-const useImmerStore = create<ImmerStoreType>()((set) => ({
-  items: [],
-  actions: {
-    getItems: () => {
-      set({ items: arr })
+const useImmerStore = create<ImmerStoreType>()(
+  logger((set) => ({
+    items: [],
+    actions: {
+      getItems: () => {
+        set({ items: arr })
+      },
+      addItem: (payload: ArrItemType) => {
+        set(
+          produce((draft: Draft<ImmerStateType>) => {
+            draft.items.push(payload)
+          })
+        )
+      },
+      removeItem: (id: number) => {
+        set(
+          produce((draft: Draft<ImmerStateType>) => ({
+            items: draft.items.filter((item) => item.id !== id),
+          }))
+        )
+      },
     },
-    addItem: (payload: ArrItemType) => {
-      set(
-        produce((draft: Draft<ImmerStateType>) => {
-          draft.items.push(payload)
-        })
-      )
-    },
-    removeItem: (id: number) => {
-      set(
-        produce((draft: Draft<ImmerStateType>) => ({
-          items: draft.items.filter((item) => item.id !== id),
-        }))
-      )
-    },
-  },
-}))
+  }))
+)
 
 export const useImmerStateSelector = () => useImmerStore((state) => state)
 export const useImmerActionSelector = () =>

@@ -1,14 +1,13 @@
 "use client"
-import { useEffect } from "react"
 import {
   useImmerActionSelector,
   useImmerStateSelector,
 } from "@/store/immerStore"
+import { useEffect } from "react"
 
 export default function Home() {
   const { items } = useImmerStateSelector()
   const { addItem, getItems, removeItem } = useImmerActionSelector()
-  console.log({ items })
   useEffect(() => {
     let isMount = true
     if (isMount) {
