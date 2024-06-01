@@ -1,7 +1,8 @@
 {
   "extends": "next/core-web-vitals",
+  "parser": "@typescript-eslint/parser",
   "rules": {
-    "no-unused-vars": "error",
+    "no-unused-vars": ["error", { "args": "none" }],
     "eqeqeq": "error",
     "no-console": "warn"
   }

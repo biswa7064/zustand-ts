@@ -1,6 +1,7 @@
 import { StoreType } from "@/types"
-import { produce, Draft } from "immer"
+import { Draft, produce } from "immer"
 import { create } from "zustand"
+
 const arr = [
   {
     id: Math.floor(Math.random() * 100),
@@ -26,7 +27,7 @@ interface ImmerActionType {
 
 export type ImmerStoreType = StoreType<ImmerStateType, ImmerActionType>
 
-const useImmerStore = create<ImmerStoreType>((set) => ({
+const useImmerStore = create<ImmerStoreType>()((set) => ({
   items: [],
   actions: {
     getItems: () => {

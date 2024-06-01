@@ -15,8 +15,7 @@ export interface ToggleStateType {
 
 interface ToggleActionType {
   handleToggle: () => void
-  // eslint-disable-next-line no-unused-vars
-  handleClear: (state: ToggleStateType) => void
+  handleClear: (isChecked: boolean) => void
 }
 const useToggleStore = create<
   StoreTypeWithAction<ToggleStateType, ToggleActionType>
@@ -24,7 +23,7 @@ const useToggleStore = create<
   middlewares((set, get) => ({
     isChecked: get()?.isChecked ?? false,
     handleToggle: () => set((state) => ({ isChecked: !state.isChecked })),
-    handleClear: ({ isChecked }) =>
+    handleClear: (isChecked: boolean) =>
       set((state) => ({ isChecked: isChecked && !state.isChecked })),
   }))
 )
